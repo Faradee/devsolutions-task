@@ -1,0 +1,8 @@
+.query {
+  background-color: white;
+  color: black;
+}
+
+.query:focus {
+  outline: none;
+}
