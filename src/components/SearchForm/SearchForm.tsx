@@ -14,6 +14,7 @@ const SearchForm = (props: searchProps) => {
       try {
         const res = await fetch(api);
         if (!res.ok) {
+          setText(`Ошибка ${res.status}`);
           throw new Error(res.statusText);
         }
         const json: numbersJSON = await res.json();
