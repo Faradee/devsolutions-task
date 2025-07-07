@@ -13,4 +13,9 @@
 .controllers {
   display: flex;
   gap: 1em;
+  justify-content: center;
+}
+p {
+  width: 50rem;
+  height: 3rem;
 }

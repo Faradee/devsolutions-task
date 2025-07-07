@@ -1,5 +1,5 @@
 import "./App.css";
-import SearchBar from "./components/SearchBar/SearchBar";
+import SearchForm from "./components/SearchBar/SearchForm";
 import { useState } from "react";
 
 export type mode = "trivia" | "year" | "date" | "math";
@@ -11,7 +11,7 @@ function App() {
     <>
       <div className="main">
         <div className="controllers">
-          <SearchBar setText={setText} mode={mode} />
+          <SearchForm setText={setText} mode={mode} />
           <select name="mode" onChange={(e) => setMode(e.currentTarget.value as mode)}>
             <option value="trivia">Trivia</option>
             <option value="year">Year</option>
