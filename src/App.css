@@ -10,3 +10,7 @@
   border: 2px solid rgba(0, 0, 128, 0.5);
   border-radius: 6px;
 }
+.controllers {
+  display: flex;
+  gap: 1em;
+}

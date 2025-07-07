@@ -1,24 +1,28 @@
-import { useState, type FormEvent } from "react";
+import { type FormEvent, type SetStateAction } from "react";
 import styles from "./styles.module.css";
-type mode = "trivia" | "year" | "date" | "math";
-const SearchBar = () => {
-  const [mode, setMode] = useState<mode>("trivia");
-  const [text, setText] = useState<string>("");
+import type { mode } from "../../App";
+
+type searchProps = { mode: mode; setText: React.Dispatch<SetStateAction<string>> };
+
+const SearchBar = (props: searchProps) => {
+  const { mode, setText } = props;
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const number = formData.get("query");
-
-    const api = `http://numbersapi.com/${number}/${mode}`;
-    try {
-      const res = await fetch(api);
-      if (!res.ok) {
-        throw new Error("error");
+    const rawQuery = formData.get("query") as string;
+    if (rawQuery) {
+      const query: string = mode === "date" ? rawQuery.replaceAll(".", "/") : rawQuery;
+      const api = `http://numbersapi.com/${query}/${mode}`;
+      try {
+        const res = await fetch(api);
+        if (!res.ok) {
+          throw new Error("error");
+        }
+        const text = await res.text();
+        setText(text);
+      } catch (error) {
+        console.log(error);
       }
-      const text = await res.text();
-      setText(text);
-    } catch (error) {
-      console.log(error);
     }
   };
   return (
