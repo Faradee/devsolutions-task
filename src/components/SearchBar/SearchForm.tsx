@@ -1,15 +1,15 @@
 import { useState, type SetStateAction, useEffect, useCallback, useRef } from "react";
 import styles from "./styles.module.css";
-import type { mode } from "../../App";
 import { useSearchParams } from "react-router";
 //TODO: ADD SEARCHSTRING HANDLING NEED TO ADD MODE CONTROLLERS
-type searchProps = { mode: mode; setText: React.Dispatch<SetStateAction<string>> };
+type searchProps = { setText: React.Dispatch<SetStateAction<string>> };
 type numbersJSON = { text: string; number: number; found: boolean; type: mode };
-const SearchForm = (props: searchProps) => {
+type mode = "trivia" | "year" | "date" | "math";
+
+const SearchForm = ({ setText }: searchProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [number, setNumber] = useState<string>("");
-  const { mode, setText } = props;
-
+  const [mode, setMode] = useState<mode>("trivia");
   const timerRef = useRef<number>(0);
   const getTextJSON = useCallback(
     async (number: string) => {
@@ -36,24 +36,31 @@ const SearchForm = (props: searchProps) => {
   const handleSubmit = useCallback(
     async (number: string) => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      const timer = setTimeout(async () => {
-        const res = await getTextJSON(number);
-        if (res) {
-          const text = res.text;
-          setText(text);
-        }
-      }, 300);
-      timerRef.current = timer;
+      if (number) {
+        const timer = setTimeout(async () => {
+          const res = await getTextJSON(number);
+          if (res) {
+            const text = res.text;
+            setText(text);
+          }
+        }, 300);
+        timerRef.current = timer;
+      }
     },
     [setText, getTextJSON]
   );
   useEffect(() => {
     handleSubmit(number);
-    setSearchParams(`?query=${number}`);
-  }, [number, mode, handleSubmit, setSearchParams]);
+    setSearchParams(number ? `?query=${number}&mode=${mode}` : "");
+    if (!number) setText("");
+  }, [number, mode, handleSubmit, setSearchParams, setText]);
   useEffect(() => {
     const query = searchParams.get("query");
-    if (query) setNumber(query);
+    const mode = searchParams.get("mode") as mode;
+    if (query) {
+      setNumber(query);
+      setMode(mode);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -81,6 +88,12 @@ const SearchForm = (props: searchProps) => {
       >
         Рандом
       </button>
+      <select name="mode" value={mode} onChange={(e) => setMode(e.currentTarget.value as mode)}>
+        <option value="trivia">Trivia</option>
+        <option value="year">Year</option>
+        <option value="date">Date</option>
+        <option value="math">Math</option>
+      </select>
     </form>
   );
 };
