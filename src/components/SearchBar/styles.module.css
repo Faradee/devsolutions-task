@@ -1,17 +1,17 @@
-.query {
+.field {
   background-color: white;
   color: black;
 }
 
-.query:focus {
+.field:focus {
   outline: none;
 }
 
-.controllers {
+.container {
   display: flex;
-  gap: 1em;
-  justify-content: center;
-  padding: 8px;
-  border: 2px solid rgba(0, 0, 128, 0.5);
-  border-radius: 6px;
+  justify-content: space-between;
+}
+
+.container > * {
+  margin: 5px 5px;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
+import styles from "./styles.module.css";
 import type { mode } from "../../types";
 type numbersJSON = { text: string; number: number; found: boolean; type: mode };
 
@@ -11,7 +12,7 @@ const InfoTab = () => {
   useEffect(() => {
     const mode = searchParams.get("mode") ? searchParams.get("mode") : "trivia";
     const handleFetch = async (number: string) => {
-      const query: string = mode === "date" ? number.replaceAll(".", "/") : number;
+      const query: string = number;
       const api = `http://numbersapi.com/${query.trim()}/${mode}?json`;
       try {
         const res = await fetch(api);
@@ -33,9 +34,12 @@ const InfoTab = () => {
     handleFetch(query!);
   }, [query, searchParams]);
   return (
-    <div>
-      <p>{number}</p>
+    <div className={styles.card}>
+      <h1>{number}</h1>
       <p>{text}</p>
+      <Link className="controller" to="/">
+        Вернуться на главную страницу
+      </Link>
     </div>
   );
 };

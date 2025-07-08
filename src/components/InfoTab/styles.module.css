@@ -1,0 +1,9 @@
+.card {
+  width: 25vw;
+}
+.card > p {
+  min-height: 4em;
+}
+.card > h1 {
+  min-height: 1em;
+}
