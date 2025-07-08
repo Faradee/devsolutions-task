@@ -4,18 +4,3 @@
   padding: 2rem;
   text-align: center;
 }
-
-.main {
-  padding: 8px;
-  border: 2px solid rgba(0, 0, 128, 0.5);
-  border-radius: 6px;
-}
-.controllers {
-  display: flex;
-  gap: 1em;
-  justify-content: center;
-}
-p {
-  width: 50rem;
-  height: 3rem;
-}

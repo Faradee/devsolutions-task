@@ -1,17 +1,18 @@
 import "./App.css";
+import InfoTab from "./components/InfoTab/InfoTab";
 import SearchForm from "./components/SearchBar/SearchForm";
-import { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 function App() {
-  const [text, setText] = useState<string>("");
   return (
     <>
-      <div className="main">
-        <div className="controllers">
-          <SearchForm setText={setText} />
-        </div>
-
-        <p>{text}</p>
+      <div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<SearchForm />}></Route>
+            <Route path="/:query" element={<InfoTab />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </>
   );
